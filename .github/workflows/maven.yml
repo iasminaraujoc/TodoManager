@@ -19,21 +19,14 @@ jobs:
 
     steps:
       - name: Baixar código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configurar JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin' 
-          java-version: '21'     
-
-      - name: Cache de dependências Maven
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository 
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven- # Restauração de chaves parciais
+          java-version: '21'
+          architecture: x64
 
       - name: Compilar e executar testes
         run: mvn clean verify # Comando Maven para compilar e executar os testes
