@@ -1,0 +1,39 @@
+name: CI/CD para Java
+
+on:
+  push:
+    branches:
+      - main 
+  pull_request:
+    branches:
+      - main 
+
+jobs:
+  teste:
+    name: Executar Testes em ${{ matrix.os }}
+    runs-on: ${{ matrix.os }} 
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest] # Testar nos 3 sistemas operacionais
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v3
+
+      - name: Configurar JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' 
+          java-version: '21'     
+
+      - name: Cache de dependências Maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository 
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven- # Restauração de chaves parciais
+
+      - name: Compilar e executar testes
+        run: mvn clean verify # Comando Maven para compilar e executar os testes
