@@ -9,7 +9,7 @@ on:
       - main 
 
 jobs:
-  teste:
+  test:
     name: Executar Testes em ${{ matrix.os }}
     runs-on: ${{ matrix.os }} 
 
@@ -26,7 +26,6 @@ jobs:
         with:
           distribution: 'temurin' 
           java-version: '21'
-          architecture: x64
 
       - name: Compilar e executar testes
         run: mvn clean verify # Comando Maven para compilar e executar os testes
